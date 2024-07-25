@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://bx2pa0dquq7ji"]
+
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_o5243"]
+[ext_resource type="Texture2D" uid="uid://cd7kfrof5vctv" path="res://Assets/applelogo.jpg" id="2_vu8if"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_70jst"]
+size = Vector2(30, 46)
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_o5243")
+jump_height = 135.0
+jump_time_to_peak = 0.33
+jump_time_to_descent = 0.4
+release_jump_gravity_multiplier = 3.5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_70jst")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-4.76837e-07, 0)
+scale = Vector2(0.015, 0.023)
+texture = ExtResource("2_vu8if")
+
+[node name="DashCD" type="Timer" parent="."]
+wait_time = 0.848
+one_shot = true
+
+[connection signal="timeout" from="DashCD" to="." method="_on_dash_cd_timeout"]
