@@ -7,6 +7,7 @@
 size = Vector2(30, 46)
 
 [node name="Player" type="CharacterBody2D"]
+modulate = Color(0.88629, 0.616378, 3.68363e-07, 1)
 script = ExtResource("1_o5243")
 jump_height = 135.0
 jump_time_to_peak = 0.33

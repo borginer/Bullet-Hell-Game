@@ -3,7 +3,10 @@ extends CharacterBody2D
 @export var SPEED = 250.0
 @export var DASH_SPEED = 480.0
 
+@onready var player_collision_shape = $CollisionShape2D
 @onready var dash_cd_timer = $DashCD
+@onready var game = get_tree().get_root().get_node("Game")
+@onready var bullet = load("res://Scenes/bullet.tscn")
 
 @export var jump_height : float
 @export var jump_time_to_peak : float
@@ -17,7 +20,7 @@ extends CharacterBody2D
 var dash_count = 0
 var dash_on_cd = false
 var dash_frames = 15
-# -1, 0, 1
+# -1, 1
 var facing = 1
 var dashing = false
 var jumping = false
@@ -32,7 +35,10 @@ func _physics_process(delta):
 	if Input.is_action_pressed("jump"):
 		jumping = true
 	else:
-		jumping = false
+		jumping = false	
+		
+	if Input.is_action_just_pressed("shoot"):
+		shoot()
 
 	if Input.is_action_pressed("dash"):
 		dash()
@@ -93,3 +99,11 @@ func move_player(direction):
 	
 func add_gravity(delta):
 	velocity.y -= get_gravity() * delta
+	
+func shoot():
+	var player_x_size = player_collision_shape.shape.extents.x
+	var new_bullet = bullet.instantiate()
+	new_bullet.spawn_position = global_position + Vector2(player_x_size * rotation * 1.5 ,0)
+	new_bullet.dir = facing
+	game.add_child.call_deferred(new_bullet)
+	new_bullet.enable()

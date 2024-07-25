@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://nqho2habb5tb"]
 
 [ext_resource type="PackedScene" uid="uid://bx2pa0dquq7ji" path="res://Scenes/player.tscn" id="1_7f0ls"]
-[ext_resource type="Texture2D" uid="uid://cnkf6gvwkigmr" path="res://Assets/icon.svg" id="2_y6p25"]
+[ext_resource type="PackedScene" uid="uid://dcf5fbis5yboo" path="res://Scenes/boss_1.tscn" id="3_a8rjt"]
 [ext_resource type="Script" path="res://Scripts/GameManager.gd" id="3_rxh11"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ovna1"]
@@ -26,16 +26,10 @@ z_index = 10
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 shape = SubResource("WorldBoundaryShape2D_ovna1")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(-56, 28)
-scale = Vector2(0.234375, 0.25)
-texture = ExtResource("2_y6p25")
-
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("3_rxh11")
 
-[node name="Sprite2D2" type="Sprite2D" parent="."]
-position = Vector2(108, -18)
-texture = ExtResource("2_y6p25")
+[node name="Boss1" parent="." instance=ExtResource("3_a8rjt")]
+position = Vector2(112, -20)
 
 [connection signal="child_order_changed" from="StaticBody2D/CollisionShape2D" to="Player" method="_on_collision_shape_2d_child_order_changed"]
