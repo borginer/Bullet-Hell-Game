@@ -1,22 +1,86 @@
-[gd_scene load_steps=4 format=3 uid="uid://drqhx4hnunadj"]
+[gd_scene load_steps=10 format=3 uid="uid://drqhx4hnunadj"]
 
-[ext_resource type="Texture2D" uid="uid://cnkf6gvwkigmr" path="res://Assets/icon.svg" id="1_0gujk"]
 [ext_resource type="Script" path="res://Scripts/bullet.gd" id="1_l655i"]
+[ext_resource type="Texture2D" uid="uid://behxts128cj8n" path="res://Assets/blue_shot.png" id="2_mi7w5"]
+[ext_resource type="Texture2D" uid="uid://b88capxacg82x" path="res://Assets/Effect and Bullet 16x16/Green Effect and Bullet 16x16.png" id="4_nripr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m13pe"]
-size = Vector2(20.34, 20.34)
+size = Vector2(17.085, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4egov"]
+atlas = ExtResource("4_nripr")
+region = Rect2(304, 112, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bhfmn"]
+atlas = ExtResource("4_nripr")
+region = Rect2(320, 112, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jwo5o"]
+atlas = ExtResource("4_nripr")
+region = Rect2(336, 112, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jgki8"]
+atlas = ExtResource("4_nripr")
+region = Rect2(352, 112, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qx3rj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_mi7w5")
+}],
+"loop": true,
+"name": &"blue_fireball",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": null
+}],
+"loop": true,
+"name": &"empty",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4egov")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bhfmn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jwo5o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jgki8")
+}],
+"loop": true,
+"name": &"green_star",
+"speed": 5.0
+}]
 
 [node name="Bullet" type="CharacterBody2D"]
 collision_layer = 8
-collision_mask = 8
+collision_mask = 4
 script = ExtResource("1_l655i")
+NORMAL_SPEED = 700
+AUTO_AIM_MAX_SPEED = 400
+AUTO_AIM_MIN_SPEED = 240
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.16, 0.16)
-texture = ExtResource("1_0gujk")
+position = Vector2(-11.5, -1.10269e-06)
+scale = Vector2(0.179167, 0.166667)
+texture = ExtResource("2_mi7w5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1.5425, 0)
 shape = SubResource("RectangleShape2D_m13pe")
 disabled = true
+
+[node name="Animations" type="AnimatedSprite2D" parent="."]
+position = Vector2(-4.76837e-07, -8.07794e-28)
+scale = Vector2(1.25, 1.25)
+sprite_frames = SubResource("SpriteFrames_qx3rj")
+animation = &"empty"
 
 [connection signal="ready" from="." to="." method="_on_ready"]

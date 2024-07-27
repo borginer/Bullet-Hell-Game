@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cd7kfrof5vctv"
-path="res://.godot/imported/applelogo.jpg-681f837cc98b027776dbccb90cab5a73.ctex"
+uid="uid://32el41b3yrta"
+path="res://.godot/imported/Water Effect and Bullet 16x16.png-9f707e04d6dbbeaefcb2d27ce39c6ffa.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/applelogo.jpg"
-dest_files=["res://.godot/imported/applelogo.jpg-681f837cc98b027776dbccb90cab5a73.ctex"]
+source_file="res://Assets/Effect and Bullet 16x16/Water Effect and Bullet 16x16.png"
+dest_files=["res://.godot/imported/Water Effect and Bullet 16x16.png-9f707e04d6dbbeaefcb2d27ce39c6ffa.ctex"]
 
 [params]
 

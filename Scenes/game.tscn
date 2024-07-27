@@ -1,15 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://nqho2habb5tb"]
+[gd_scene load_steps=6 format=3 uid="uid://nqho2habb5tb"]
 
 [ext_resource type="PackedScene" uid="uid://bx2pa0dquq7ji" path="res://Scenes/player.tscn" id="1_7f0ls"]
 [ext_resource type="PackedScene" uid="uid://dcf5fbis5yboo" path="res://Scenes/boss_1.tscn" id="3_a8rjt"]
 [ext_resource type="Script" path="res://Scripts/GameManager.gd" id="3_rxh11"]
+[ext_resource type="Texture2D" uid="uid://qjieqhbvocem" path="res://Assets/black_sun_background.png" id="4_nkdxi"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ovna1"]
-distance = -46.0
+distance = -54.0
 
 [node name="Game" type="Node2D"]
 
 [node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
 
 [node name="Label" type="Label" parent="."]
 offset_left = -956.0
@@ -20,8 +22,11 @@ theme_override_font_sizes/font_size = 50
 
 [node name="Player" parent="." instance=ExtResource("1_7f0ls")]
 z_index = 10
+position = Vector2(0, 145)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(2.08165e-12, 200)
+constant_linear_velocity = Vector2(2.08165e-12, 2.08165e-12)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 shape = SubResource("WorldBoundaryShape2D_ovna1")
@@ -30,6 +35,13 @@ shape = SubResource("WorldBoundaryShape2D_ovna1")
 script = ExtResource("3_rxh11")
 
 [node name="Boss1" parent="." instance=ExtResource("3_a8rjt")]
-position = Vector2(112, -20)
+position = Vector2(132, 137)
+
+[node name="Background" type="Sprite2D" parent="."]
+modulate = Color(1, 0.886275, 1, 1)
+z_index = -1
+position = Vector2(2.08165e-12, 15)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_nkdxi")
 
 [connection signal="child_order_changed" from="StaticBody2D/CollisionShape2D" to="Player" method="_on_collision_shape_2d_child_order_changed"]

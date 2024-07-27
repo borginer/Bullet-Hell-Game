@@ -18,14 +18,14 @@ func _physics_process(delta):
 	move_and_slide()
 
 func _ready():
-	modulate = Color(0, 200, 0, 1)
+	modulate = Color(0, 0, 200, 1)
 
 func _on_hit_timer_timeout():
 	modulate = Color(0, 0, 200, 1)
 	
 func _on_area_2d_body_entered(body):
 	modulate = Color(200, 0, 0, 1)
-	body.free_bullet()
+	body.free()
 	hit_timer.start()
 
 func set_player_node(player_node):

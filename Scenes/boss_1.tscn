@@ -3,15 +3,16 @@
 [ext_resource type="Texture2D" uid="uid://cnkf6gvwkigmr" path="res://Assets/icon.svg" id="1_t2ki8"]
 [ext_resource type="Script" path="res://Scripts/boss_1.gd" id="1_yujyl"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_birb8"]
-radius = 64.0
-height = 128.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_va6mf"]
+size = Vector2(78, 98)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lrm05"]
-size = Vector2(129.5, 128.576)
+size = Vector2(112.329, 102)
 
 [node name="Boss1" type="CharacterBody2D"]
 modulate = Color(0, 0.980392, 0, 1)
+collision_layer = 2
+collision_mask = 2
 script = ExtResource("1_yujyl")
 SPEED = 100.0
 
@@ -19,21 +20,21 @@ SPEED = 100.0
 collision_layer = 8
 collision_mask = 8
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(2.08165e-12, 2.08165e-12)
-scale = Vector2(0.98, 1)
-shape = SubResource("CapsuleShape2D_birb8")
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 13)
+shape = SubResource("RectangleShape2D_va6mf")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0.5, 0)
-scale = Vector2(1.00781, 1)
+position = Vector2(-3.8147e-06, 13)
+scale = Vector2(0.640625, 0.796875)
 texture = ExtResource("1_t2ki8")
+offset = Vector2(2.08165e-12, 2.08165e-12)
 
 [node name="hit_timer" type="Timer" parent="."]
 wait_time = 0.3
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
-position = Vector2(2.1684e-19, 0)
+position = Vector2(0, 13)
 scale = Vector2(0.73, 1)
 shape = SubResource("RectangleShape2D_lrm05")
 
