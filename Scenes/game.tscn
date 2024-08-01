@@ -11,21 +11,38 @@ distance = -54.0
 [node name="Game" type="Node2D"]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2, 2)
+zoom = Vector2(2.3, 2.3)
 
-[node name="Label" type="Label" parent="."]
-offset_left = -956.0
-offset_top = -539.0
-offset_right = -682.0
-offset_bottom = -466.0
+[node name="TimeLabel" type="Label" parent="."]
+visible = false
+offset_left = -169.0
+offset_top = -241.0
+offset_right = 105.0
+offset_bottom = -168.0
 theme_override_font_sizes/font_size = 50
+
+[node name="PlayerHealth" type="Label" parent="."]
+offset_left = -415.0
+offset_top = -242.0
+offset_right = -125.0
+offset_bottom = -173.0
+theme_override_font_sizes/font_size = 30
+text = "HP: 3"
+
+[node name="BossHealth" type="Label" parent="."]
+offset_left = 249.0
+offset_top = -243.0
+offset_right = 557.0
+offset_bottom = -170.0
+theme_override_font_sizes/font_size = 30
+text = "Boss HP: 50"
 
 [node name="Player" parent="." instance=ExtResource("1_7f0ls")]
 z_index = 10
 position = Vector2(0, 145)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2(2.08165e-12, 200)
+position = Vector2(0, 158)
 constant_linear_velocity = Vector2(2.08165e-12, 2.08165e-12)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
@@ -35,12 +52,12 @@ shape = SubResource("WorldBoundaryShape2D_ovna1")
 script = ExtResource("3_rxh11")
 
 [node name="Boss1" parent="." instance=ExtResource("3_a8rjt")]
-position = Vector2(132, 137)
+position = Vector2(132, 146)
 
 [node name="Background" type="Sprite2D" parent="."]
 modulate = Color(1, 0.886275, 1, 1)
 z_index = -1
-position = Vector2(2.08165e-12, 15)
+position = Vector2(-2, 48)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("4_nkdxi")
 

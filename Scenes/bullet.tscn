@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://b88capxacg82x" path="res://Assets/Effect and Bullet 16x16/Green Effect and Bullet 16x16.png" id="4_nripr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m13pe"]
-size = Vector2(17.085, 18)
+size = Vector2(15, 15)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4egov"]
 atlas = ExtResource("4_nripr")
@@ -68,17 +68,18 @@ AUTO_AIM_MAX_SPEED = 400
 AUTO_AIM_MIN_SPEED = 240
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(-11.5, -1.10269e-06)
-scale = Vector2(0.179167, 0.166667)
+visible = false
+position = Vector2(-9.49999, 0)
+scale = Vector2(0.145833, 0.147917)
 texture = ExtResource("2_mi7w5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1.5425, 0)
+position = Vector2(0.5, 2.08165e-12)
 shape = SubResource("RectangleShape2D_m13pe")
 disabled = true
 
 [node name="Animations" type="AnimatedSprite2D" parent="."]
-position = Vector2(-4.76837e-07, -8.07794e-28)
+position = Vector2(-2.84217e-14, -9.62965e-35)
 scale = Vector2(1.25, 1.25)
 sprite_frames = SubResource("SpriteFrames_qx3rj")
 animation = &"empty"

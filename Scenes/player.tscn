@@ -1,14 +1,13 @@
-[gd_scene load_steps=26 format=3 uid="uid://bx2pa0dquq7ji"]
+[gd_scene load_steps=29 format=3 uid="uid://bx2pa0dquq7ji"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_o5243"]
 [ext_resource type="Texture2D" uid="uid://cu0ckrhm2cafq" path="res://Assets/Boshy_right_walk.png" id="3_1r3pu"]
 [ext_resource type="Texture2D" uid="uid://c31nb7d7okyae" path="res://Assets/Boshy_left_walk.png" id="3_ypfxh"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7f1ly"]
-size = Vector2(20, 8.96)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_5meof"]
-size = Vector2(14, 13)
+[ext_resource type="Script" path="res://Scripts/Action_Machine.gd" id="4_0oddd"]
+[ext_resource type="Script" path="res://Scripts/player_move.gd" id="5_mifd2"]
+[ext_resource type="Script" path="res://Scripts/player_jump.gd" id="6_r0weq"]
+[ext_resource type="Script" path="res://Scripts/player_shoot.gd" id="7_ejdjb"]
+[ext_resource type="Script" path="res://Scripts/player_dash.gd" id="8_ea4bs"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7cpkb"]
 atlas = ExtResource("3_ypfxh")
@@ -171,25 +170,13 @@ animations = [{
 "speed": 8.0
 }]
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("bottom_collision_shape")]
+[node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_o5243")
-DASH_SPEED = 480.0
-bottom_collision_shape = NodePath("bottom_collision_shape")
-jump_height = 72.0
+jump_height = 75.0
 jump_time_to_peak = 0.25
 jump_time_to_descent = 0.3
-release_jump_gravity_multiplier = 5.0
-shoot_delay = 0.18
-auto_shoot_delay = 0.33
-dash_frames = 14
-
-[node name="bottom_collision_shape" type="CollisionShape2D" parent="."]
-position = Vector2(0, 7.48)
-shape = SubResource("RectangleShape2D_7f1ly")
-
-[node name="upper_collision_shape" type="CollisionShape2D" parent="."]
-position = Vector2(0, -3.5)
-shape = SubResource("RectangleShape2D_5meof")
+release_jump_gravity_multiplier = 6.0
+repeat_damage_delay = 1.0
 
 [node name="DashCD" type="Timer" parent="."]
 wait_time = 0.848
@@ -199,4 +186,51 @@ one_shot = true
 sprite_frames = SubResource("SpriteFrames_l1y5c")
 animation = &"idle_left"
 
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+visible = false
+scale = Vector2(0.98961, 0.98591)
+build_mode = 1
+polygon = PackedVector2Array(10.105, 9.12863, 6.03141, 12.1081, -6.03141, 12.1081, -10.105, 9.12863, -10.105, -1.01429, -10.105, -5.07146, -7.07349, -5.07146, -7.07349, -10.1429, 7.07349, -10.1429, 7.07349, -5.07146, 10.0524, -5.04504, 10.105, -1.01429)
+
+[node name="Action_Machine" type="Node" parent="." node_paths=PackedStringArray("player")]
+script = ExtResource("4_0oddd")
+player = NodePath("..")
+
+[node name="Move" type="Node" parent="Action_Machine" node_paths=PackedStringArray("player")]
+script = ExtResource("5_mifd2")
+player = NodePath("../..")
+SPEED = 240.0
+ramp_frames = 6
+deramp_frames = 3
+
+[node name="Jump" type="Node" parent="Action_Machine" node_paths=PackedStringArray("player")]
+script = ExtResource("6_r0weq")
+player = NodePath("../..")
+
+[node name="Shoot" type="Node" parent="Action_Machine" node_paths=PackedStringArray("player", "player_collision_shape")]
+script = ExtResource("7_ejdjb")
+player = NodePath("../..")
+player_collision_shape = NodePath("../../CollisionPolygon2D")
+shoot_delay = 0.2
+auto_shoot_delay = 0.33
+
+[node name="Dash" type="Node" parent="Action_Machine" node_paths=PackedStringArray("player")]
+script = ExtResource("8_ea4bs")
+player = NodePath("../..")
+dash_speed = 450.0
+dash_frames = 13
+
+[node name="time_between_dashes" type="Timer" parent="Action_Machine/Dash"]
+wait_time = 0.45
+one_shot = true
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_mask = 256
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hitbox"]
+build_mode = 1
+polygon = PackedVector2Array(-7, -4, -12, 9, 12, 9, 7, -4, 0, -12)
+
 [connection signal="timeout" from="DashCD" to="." method="_on_dash_cd_timeout"]
+[connection signal="timeout" from="Action_Machine/Dash/time_between_dashes" to="Action_Machine/Dash" method="_on_time_between_dashes_timeout"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
