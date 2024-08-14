@@ -82,6 +82,12 @@ disabled = true
 position = Vector2(-2.84217e-14, -9.62965e-35)
 scale = Vector2(1.25, 1.25)
 sprite_frames = SubResource("SpriteFrames_qx3rj")
-animation = &"empty"
+animation = &"blue_fireball"
+
+[node name="Lifetime" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+autostart = true
 
 [connection signal="ready" from="." to="." method="_on_ready"]
+[connection signal="timeout" from="Lifetime" to="." method="_on_lifetime_timeout"]

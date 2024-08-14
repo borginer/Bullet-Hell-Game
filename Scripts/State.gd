@@ -1,14 +1,19 @@
 extends Node
 class_name State
 
-func Enter():
+signal leave_state
+
+func enter():
 	pass
 
-func Exit():
+func exit():
 	pass
 
-func Update():
+func update(delta):
 	pass
 
-func Physics_Update():
+func physics_update(delta):
+	pass
+
+func death():
 	pass

@@ -1,18 +1,23 @@
-[gd_scene load_steps=5 format=3 uid="uid://dcf5fbis5yboo"]
+[gd_scene load_steps=8 format=3 uid="uid://dcf5fbis5yboo"]
 
 [ext_resource type="Texture2D" uid="uid://cnkf6gvwkigmr" path="res://Assets/icon.svg" id="1_t2ki8"]
 [ext_resource type="Script" path="res://Scripts/boss_1.gd" id="1_yujyl"]
+[ext_resource type="Script" path="res://Scripts/StateMachine.gd" id="3_ep06j"]
+[ext_resource type="Script" path="res://Scripts/idle_state.gd" id="4_37mxm"]
+[ext_resource type="Script" path="res://Scripts/Skill_1.gd" id="5_bdjlo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_va6mf"]
 size = Vector2(78, 98)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_lrm05"]
-size = Vector2(112.329, 102)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gpb2s"]
+radius = 50.0
+height = 137.143
 
-[node name="Boss1" type="CharacterBody2D"]
+[node name="Boss1" type="CharacterBody2D" groups=["enemies"]]
 modulate = Color(0, 0.980392, 0, 1)
+scale = Vector2(0.7, 0.7)
 collision_layer = 256
-collision_mask = 2
+collision_mask = 514
 script = ExtResource("1_yujyl")
 SPEED = 100.0
 
@@ -34,14 +39,37 @@ offset = Vector2(2.08165e-12, 2.08165e-12)
 wait_time = 0.3
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
-position = Vector2(0, 13)
-scale = Vector2(0.73, 1)
-shape = SubResource("RectangleShape2D_lrm05")
+position = Vector2(-5.96046e-08, 12.8571)
+scale = Vector2(0.71, 0.71)
+shape = SubResource("CapsuleShape2D_gpb2s")
 
 [node name="action_timer" type="Timer" parent="."]
 wait_time = 2.0
 autostart = true
 
+[node name="meteor_timer" type="Timer" parent="."]
+wait_time = 4.5
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("boss")]
+script = ExtResource("3_ep06j")
+delay_between_states = 2.0
+boss = NodePath("..")
+
+[node name="Idle_0" type="Node" parent="StateMachine"]
+script = ExtResource("4_37mxm")
+idle_time = 2.0
+
+[node name="Skill_1" type="Node" parent="StateMachine" node_paths=PackedStringArray("boss")]
+script = ExtResource("5_bdjlo")
+boss = NodePath("../..")
+
+[node name="side_shot_timer" type="Timer" parent="StateMachine/Skill_1"]
+wait_time = 12.0
+
+[node name="Skill_2" type="Node" parent="StateMachine"]
+
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="timeout" from="hit_timer" to="." method="_on_hit_timer_timeout"]
 [connection signal="timeout" from="action_timer" to="." method="_on_action_timer_timeout"]
+[connection signal="timeout" from="meteor_timer" to="." method="_on_meteor_timer_timeout"]
+[connection signal="timeout" from="StateMachine/Skill_1/side_shot_timer" to="." method="_on_side_shot_timer_timeout"]

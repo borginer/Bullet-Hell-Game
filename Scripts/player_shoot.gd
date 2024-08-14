@@ -19,7 +19,6 @@ var cur_weapon_type = WEAPON_TYPE.NORMAL
 
 var can_shoot : bool = true
 
-
 func start():
 	shoot_timer = Timer.new()
 	shoot_timer.one_shot = true
@@ -64,3 +63,4 @@ func shoot():
 
 func _on_shoot_timer_timeout():
 	can_shoot = true
+	

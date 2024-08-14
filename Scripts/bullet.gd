@@ -3,6 +3,7 @@ extends CharacterBody2D
 @export var NORMAL_SPEED = 600
 @export var AUTO_AIM_MAX_SPEED = 450
 @export var AUTO_AIM_MIN_SPEED = 300
+@export var LIFE_TIME : float = 10
 
 @onready var bullet_collision_shape = $CollisionShape2D
 @onready var boss_1 : CharacterBody2D = $/root/Game/Boss1
@@ -30,13 +31,25 @@ func _on_ready():
 
 func _physics_process(delta):
 	bullet_collision_shape.disabled = false
+	
 	var speed : float
 	if auto_aim:
-		var boss_distance : float = (boss_1.position - position).length()
-		var boss_dir : Vector2 = (boss_1.position - position).normalized()
-		var weight = far_weight * (boss_distance / 700) + close_weight * ((700 - boss_distance) / 700)
-		speed = min(AUTO_AIM_MAX_SPEED, (boss_distance / 2) + AUTO_AIM_MIN_SPEED)
-		dir = ((dir * weight + boss_dir)).normalized()
+		var closest_enemy
+		var distance = 1500
+		var cur_dist
+		
+		for enemy in get_tree().get_nodes_in_group("enemies"):
+			cur_dist = (enemy.position - position).length()
+			if cur_dist < distance:
+				distance = cur_dist
+				closest_enemy = enemy
+				
+		var enemy_distance : float = (closest_enemy.position - position).length()
+		var enemy_dir : Vector2 = (closest_enemy.position - position).normalized()
+		var weight = far_weight * (enemy_distance / 700) + close_weight * ((700 - enemy_distance) / 700)
+		
+		speed = min(AUTO_AIM_MAX_SPEED, (enemy_distance / 2) + AUTO_AIM_MIN_SPEED)
+		dir = ((dir * weight + enemy_dir)).normalized()
 	else: 
 		speed = NORMAL_SPEED
 		dir = starting_dir 
@@ -46,6 +59,8 @@ func _physics_process(delta):
 	rotation = dir.angle()
 	move_and_slide()
 
-func free():
+func on_being_hit():
 	queue_free()
-	
+
+func _on_lifetime_timeout():
+	queue_free()

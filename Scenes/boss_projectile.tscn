@@ -1,0 +1,101 @@
+[gd_scene load_steps=13 format=3 uid="uid://bnv34hjhm8ohp"]
+
+[ext_resource type="Script" path="res://Scripts/boss_projectile.gd" id="1_516g1"]
+[ext_resource type="Texture2D" uid="uid://32el41b3yrta" path="res://Assets/Effect and Bullet 16x16/Water Effect and Bullet 16x16.png" id="1_lrtls"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uvo3y"]
+atlas = ExtResource("1_lrtls")
+region = Rect2(304, 144, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vpi73"]
+atlas = ExtResource("1_lrtls")
+region = Rect2(320, 144, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wnhis"]
+atlas = ExtResource("1_lrtls")
+region = Rect2(336, 144, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_56htf"]
+atlas = ExtResource("1_lrtls")
+region = Rect2(352, 144, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m7me0"]
+atlas = ExtResource("1_lrtls")
+region = Rect2(304, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0k1pt"]
+atlas = ExtResource("1_lrtls")
+region = Rect2(320, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uu1vl"]
+atlas = ExtResource("1_lrtls")
+region = Rect2(336, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m7wuo"]
+atlas = ExtResource("1_lrtls")
+region = Rect2(352, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vsbuc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uvo3y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vpi73")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wnhis")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_56htf")
+}],
+"loop": true,
+"name": &"blue_ball",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m7me0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0k1pt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uu1vl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m7wuo")
+}],
+"loop": true,
+"name": &"blue_disk",
+"speed": 4.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ubds1"]
+radius = 7.0
+
+[node name="boss_projectile" type="CharacterBody2D"]
+collision_layer = 256
+collision_mask = 512
+script = ExtResource("1_516g1")
+meteor_top_speed = 600.0
+meteor_ramp_time = 1.0
+
+[node name="Animations" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_vsbuc")
+animation = &"blue_disk"
+autoplay = "blue_disk"
+frame_progress = 0.0846308
+
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
+scale = Vector2(0.95, 0.95)
+shape = SubResource("CircleShape2D_ubds1")
+
+[node name="Lifetime" type="Timer" parent="."]
+wait_time = 10.0
+
+[node name="meteor_start_timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Lifetime" to="." method="_on_lifetime_timeout"]
+[connection signal="timeout" from="meteor_start_timer" to="." method="_on_meteor_start_timer_timeout"]

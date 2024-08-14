@@ -10,6 +10,8 @@ extends CharacterBody2D
 @onready var jump_gravity : float = (-2.0 * jump_height) / pow(jump_time_to_peak, 2)
 @onready var fall_gravity : float = (-2.0 * jump_height) / pow(jump_time_to_descent, 2)
 
+@onready var hitbox = $Hitbox
+@onready var hitbox_shape = $Hitbox/CollisionPolygon2D
 @onready var animations = $Animations
 
 var health : int
@@ -34,6 +36,7 @@ func _ready():
 	add_child(repeat_damage_timer)
 
 func _physics_process(delta):
+	check_damage()
 	play_animation()
 
 func play_animation():
@@ -64,11 +67,14 @@ func physics_update(delta):
 	move_and_slide()
 
 func _on_repeat_damage_timeout():
+	hitbox_shape.disabled = false
 	can_be_damaged = true
-
-func _on_hitbox_body_entered(body):
-	if can_be_damaged:
+	
+func check_damage():
+	if can_be_damaged and hitbox.has_overlapping_bodies():
 		health -= 1
+		for body in hitbox.get_overlapping_bodies():
+			body.on_being_hit()
 		
 		if health == 0:
 			get_tree().reload_current_scene()
@@ -76,7 +82,10 @@ func _on_hitbox_body_entered(body):
 			
 		can_be_damaged = false
 		repeat_damage_timer.start()
-	
+
+func on_being_hit():
+	pass
+
 #@export var SPEED : float = 250.0
 #@export var DASH_SPEED : float = 450.0
 #@export var bottom_collision_shape : CollisionShape2D

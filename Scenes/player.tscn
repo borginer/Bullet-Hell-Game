@@ -175,7 +175,7 @@ script = ExtResource("1_o5243")
 jump_height = 75.0
 jump_time_to_peak = 0.25
 jump_time_to_descent = 0.3
-release_jump_gravity_multiplier = 6.0
+release_jump_gravity_multiplier = 5.0
 repeat_damage_delay = 1.0
 
 [node name="DashCD" type="Timer" parent="."]
@@ -199,7 +199,7 @@ player = NodePath("..")
 [node name="Move" type="Node" parent="Action_Machine" node_paths=PackedStringArray("player")]
 script = ExtResource("5_mifd2")
 player = NodePath("../..")
-SPEED = 240.0
+moon_walk_speed = 160.0
 ramp_frames = 6
 deramp_frames = 3
 
@@ -233,4 +233,3 @@ polygon = PackedVector2Array(-7, -4, -12, 9, 12, 9, 7, -4, 0, -12)
 
 [connection signal="timeout" from="DashCD" to="." method="_on_dash_cd_timeout"]
 [connection signal="timeout" from="Action_Machine/Dash/time_between_dashes" to="Action_Machine/Dash" method="_on_time_between_dashes_timeout"]
-[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

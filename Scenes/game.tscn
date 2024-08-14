@@ -1,17 +1,50 @@
-[gd_scene load_steps=6 format=3 uid="uid://nqho2habb5tb"]
+[gd_scene load_steps=11 format=3 uid="uid://nqho2habb5tb"]
 
 [ext_resource type="PackedScene" uid="uid://bx2pa0dquq7ji" path="res://Scenes/player.tscn" id="1_7f0ls"]
 [ext_resource type="PackedScene" uid="uid://dcf5fbis5yboo" path="res://Scenes/boss_1.tscn" id="3_a8rjt"]
 [ext_resource type="Script" path="res://Scripts/GameManager.gd" id="3_rxh11"]
-[ext_resource type="Texture2D" uid="uid://qjieqhbvocem" path="res://Assets/black_sun_background.png" id="4_nkdxi"]
+[ext_resource type="Texture2D" uid="uid://bp6a5v3hehdya" path="res://Assets/black_white_bg1-fotor-2024080910533.png" id="4_1407c"]
+[ext_resource type="Script" path="res://Scripts/fps_label.gd" id="5_nnnef"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ovna1"]
 distance = -54.0
 
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_t3bb5"]
+normal = Vector2(-1, 0)
+distance = -416.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_20iav"]
+normal = Vector2(1, 0)
+distance = -416.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lx60s"]
+bg_color = Color(0.560784, 0.443137, 0.952941, 1)
+skew = Vector2(2.08165e-12, 2.08165e-12)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_detail = 20
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+shadow_color = Color(0.0784314, 0.0745098, 0.0627451, 0.6)
+shadow_size = 2
+shadow_offset = Vector2(0.4, 0.4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8e1oq"]
+bg_color = Color(0.811765, 0.141176, 0.235294, 1)
+corner_detail = 20
+shadow_color = Color(0.0156863, 0.0431373, 0.0235294, 0.878431)
+
 [node name="Game" type="Node2D"]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2.3, 2.3)
+zoom = Vector2(1.5, 1.5)
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
 
 [node name="TimeLabel" type="Label" parent="."]
 visible = false
@@ -22,20 +55,12 @@ offset_bottom = -168.0
 theme_override_font_sizes/font_size = 50
 
 [node name="PlayerHealth" type="Label" parent="."]
-offset_left = -415.0
-offset_top = -242.0
-offset_right = -125.0
-offset_bottom = -173.0
+offset_left = -381.0
+offset_top = 179.0
+offset_right = -91.0
+offset_bottom = 248.0
 theme_override_font_sizes/font_size = 30
 text = "HP: 3"
-
-[node name="BossHealth" type="Label" parent="."]
-offset_left = 249.0
-offset_top = -243.0
-offset_right = 557.0
-offset_bottom = -170.0
-theme_override_font_sizes/font_size = 30
-text = "Boss HP: 50"
 
 [node name="Player" parent="." instance=ExtResource("1_7f0ls")]
 z_index = 10
@@ -45,20 +70,77 @@ position = Vector2(0, 145)
 position = Vector2(0, 158)
 constant_linear_velocity = Vector2(2.08165e-12, 2.08165e-12)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="ground" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-2, 0)
 shape = SubResource("WorldBoundaryShape2D_ovna1")
+
+[node name="right_wall" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-34, 1)
+shape = SubResource("WorldBoundaryShape2D_t3bb5")
+
+[node name="left_wall" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(34, 1)
+shape = SubResource("WorldBoundaryShape2D_20iav")
 
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("3_rxh11")
 
-[node name="Boss1" parent="." instance=ExtResource("3_a8rjt")]
-position = Vector2(132, 146)
+[node name="Boss1" parent="." node_paths=PackedStringArray("player", "bl_corner", "br_corner", "tl_corner", "tr_corner") instance=ExtResource("3_a8rjt")]
+position = Vector2(135, 166)
+player = NodePath("../Player")
+bl_corner = NodePath("../Markers/BottomLeft")
+br_corner = NodePath("../Markers/BottomRight")
+tl_corner = NodePath("../Markers/TopLeft")
+tr_corner = NodePath("../Markers/TopRight")
 
 [node name="Background" type="Sprite2D" parent="."]
-modulate = Color(1, 0.886275, 1, 1)
+modulate = Color(1, 1, 1, 0.796078)
 z_index = -1
-position = Vector2(-2, 48)
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("4_nkdxi")
+position = Vector2(-1, 4)
+scale = Vector2(0.793, 0.59)
+texture = ExtResource("4_1407c")
 
-[connection signal="child_order_changed" from="StaticBody2D/CollisionShape2D" to="Player" method="_on_collision_shape_2d_child_order_changed"]
+[node name="Label" type="Label" parent="."]
+visible = false
+offset_left = -115.0
+offset_top = -153.0
+offset_right = -75.0
+offset_bottom = -130.0
+script = ExtResource("5_nnnef")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_top = -1.0
+offset_right = 40.0
+offset_bottom = 39.0
+
+[node name="BossHealth" type="ProgressBar" parent="Control"]
+modulate = Color(1, 1, 1, 0.8)
+layout_mode = 0
+offset_left = -384.0
+offset_top = -214.0
+offset_right = 383.0
+offset_bottom = -201.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/background = SubResource("StyleBoxFlat_lx60s")
+theme_override_styles/fill = SubResource("StyleBoxFlat_8e1oq")
+max_value = 110.0
+value = 50.0
+show_percentage = false
+
+[node name="Markers" type="Node" parent="."]
+
+[node name="BottomLeft" type="Marker2D" parent="Markers"]
+position = Vector2(-376, 209)
+
+[node name="BottomRight" type="Marker2D" parent="Markers"]
+position = Vector2(379, 209)
+
+[node name="TopLeft" type="Marker2D" parent="Markers"]
+position = Vector2(-379, -210)
+
+[node name="TopRight" type="Marker2D" parent="Markers"]
+position = Vector2(379, -211)
+
+[connection signal="child_order_changed" from="StaticBody2D/ground" to="Player" method="_on_collision_shape_2d_child_order_changed"]
